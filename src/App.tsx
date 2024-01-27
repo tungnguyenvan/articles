@@ -1,16 +1,16 @@
 import { ThemeProvider } from "@emotion/react";
 import "./App.css";
 import AppRouter from "./components/common/AppRouter";
-import { createTheme } from "@mui/material";
-import AppBar from "./components/common/AppBar";
+import { Box, createTheme } from "@mui/material";
 
 const defaultTheme = createTheme();
 
 function App() {
   return (
     <ThemeProvider theme={defaultTheme}>
-      <AppBar />
-      <AppRouter />
+      <Box sx={{ display: "flex" }}>
+        <AppRouter />
+      </Box>
     </ThemeProvider>
   );
 }

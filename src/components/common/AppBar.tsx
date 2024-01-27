@@ -1,7 +1,12 @@
 import { IconButton, Toolbar } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import MenuIcon from "@mui/icons-material/Menu";
 import { styled } from "@mui/material/styles";
-import React from "react";
+import React, { useCallback } from "react";
+import {
+  NavBarContextAction,
+  useNavBarContext,
+} from "../../context/nav/NavBarContext";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -27,8 +32,14 @@ const CustomAppBar = styled(MuiAppBar, {
 }));
 
 const AppBar: React.FC = () => {
+  const [{ open }, dispatchNavBar] = useNavBarContext();
+
+  const toggleDrawer = useCallback(() => {
+    dispatchNavBar(NavBarContextAction.TOGGLE);
+  }, [dispatchNavBar]);
+
   return (
-    <CustomAppBar>
+    <CustomAppBar position="absolute" open={open}>
       <Toolbar
         sx={{
           pr: "24px", // keep right padding when drawer closed
@@ -38,12 +49,14 @@ const AppBar: React.FC = () => {
           edge="start"
           color="inherit"
           aria-label="open drawer"
-          //   onClick={toggleDrawer}
+          onClick={toggleDrawer}
           sx={{
             marginRight: "36px",
-            // ...(open && { display: 'none' }),
+            ...(open && { display: 'none' }),
           }}
-        ></IconButton>
+        >
+          <MenuIcon />
+        </IconButton>
       </Toolbar>
     </CustomAppBar>
   );

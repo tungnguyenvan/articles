@@ -2,18 +2,32 @@ import {
   Avatar,
   Box,
   Button,
-  Container,
+  Paper,
   TextField,
   Typography,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import React, { useCallback } from "react";
+import { UserModel } from "../../models/UserModel";
 
 const LoginForm: React.FC = () => {
-  const handleSubmit = useCallback(() => {}, []);
+  const handleSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      const user: Pick<UserModel, "username" | "password"> = {
+        username: data.get("username") as string,
+        password: data.get("password") as string,
+      };
+
+      // TODO: login user
+      console.log(user);
+    },
+    []
+  );
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
       <Box
         sx={{
           marginTop: 8,
@@ -59,7 +73,7 @@ const LoginForm: React.FC = () => {
           </Button>
         </Box>
       </Box>
-    </Container>
+    </Paper>
   );
 };
 
