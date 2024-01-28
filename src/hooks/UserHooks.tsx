@@ -1,5 +1,5 @@
 import { UserModel } from "../models/UserModel";
-import { useGet } from ".";
+import { useGet, usePost } from ".";
 
 export const useUsers = (onError?: (error: unknown) => void) => {
   return useGet<UserModel[]>({
@@ -23,5 +23,12 @@ export const useUserInfo = (onError?: (error: unknown) => void) => {
   return useGet<UserModel>({
     path: `/users/me`,
     onError,
+  });
+};
+
+export const useUserLogin = (onError: (error: unknown) => void) => {
+  return usePost<UserModel, Pick<UserModel, "username" | "password">>({
+    path: "/users/login",
+    error: onError,
   });
 };

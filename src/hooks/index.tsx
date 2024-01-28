@@ -36,5 +36,34 @@ export const useGet = <T, P = object>(request: {
 };
 
 // TODO: Add a usePost hook here
+/**
+ * T: The type of data that is returned from the API
+ * P: The type of data that is passed to the API
+ */
+export const usePost = <T, P>(request: {
+  path: string;
+  error?: (error: unknown) => void;
+}) => {
+  const [data, setData] = useState<T | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const execute = useCallback(
+    async (params?: P) => {
+      setLoading(true);
+      try {
+        const fetchData = await Network.post<T, P>(request.path, params);
+        setData(fetchData);
+      } catch (e) {
+        request.error && request.error(e);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [setData, setLoading, request]
+  );
+
+  return { data, loading, execute };
+};
+
 // TODO: Add a usePut hook here
 // TODO: Add a useDelete hook here

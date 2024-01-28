@@ -7,10 +7,21 @@ import {
   Typography,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { UserModel } from "../../models/UserModel";
+import { useUserLogin } from "../../hooks/UserHooks";
 
 const LoginForm: React.FC = () => {
+  const handleLoginError = useCallback((error: unknown) => {
+    // TODO: Handle login error
+    // example: Toast message login failed here
+    console.log(error);
+  }, []);
+
+  // TODO: Handle loading
+  const { execute: executeLogin, data: loginResponse } =
+    useUserLogin(handleLoginError);
+
   const handleSubmit = useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -21,10 +32,20 @@ const LoginForm: React.FC = () => {
       };
 
       // TODO: login user
-      console.log(user);
+      executeLogin(user);
     },
-    []
+    [executeLogin]
   );
+
+  useEffect(() => {
+    if (!loginResponse) {
+      return;
+    }
+
+    // TODO: Handle login response here
+    // example: Toast message login success here
+    console.log(loginResponse);
+  }, [loginResponse]);
 
   return (
     <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
